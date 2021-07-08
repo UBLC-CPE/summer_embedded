@@ -1,47 +1,55 @@
+<?php
+        if(session_status()!=PHP_SESSION_ACTIVE) session_start();
+        
+        include("config/connect.php");
+        
+        
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            
+            
+            
+            
+            $un = $conn->real_escape_string($_POST['username']);
+            $pw = $conn->real_escape_string($_POST['password']);
+            
+            $sql = "SELECT * FROM login WHERE un = '$un' and pw = '$pw'";
+            $result = $conn -> query($sql);
+            $row = $result->fetch_array(MYSQLI_ASSOC);
+            $count = mysqli_num_rows($result);
+            
+            if($count > 0) {
+                header("location:   successful.html");
+            } else {
+                $error = "Invalid Credentials";
+            }
+            
+            /*
+            $sql = "SELECT id FROM login WHERE un= '$un' and pw= '$pw'";
+            $result = mysqli_fetch_array($result,MYSQLI_ASSOC);
+            $active = $row['active'];
+            
+            $count = mysqli_num_rows($result);
+            
+            
+            if(count == 1) {
+                session_register("un");
+                $_SESSION['login_user'] = $un;
+                
+                header("location: successful.html");
+            } else {
+                $error = "Invalid Credentials";
+                
+            }
+            */
+        }
+        
+        
+    ?>
+
 <!DOCTYPE html>
 <html>
     
-    <?php
-        
-        session_start();
-        require 'config/connect.php';
-        
-        
-        if(isset($_POST['login'])) {
-            $username = !empty($_POST['username']) ? trim($_POST['username']) : null;
-            $passwordAttempt = !empty($_POST['password']) ? trim($_POST['password']) : null;
-            
-            $sql = "SELECT id, un, pw FROM login WHERE un = :un";
-            $stmt = $pdo->prepare($sql);
-            
-            //bind
-            $stmt -> bindValue(':un', $username);
-            //execute
-            $stmt -> execute();
-            
-            //fetch
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if(user === false) {
-                die('Incorrect username/password');
-            } else {
-                $validPassword = password_verify($passwordAttempt, $user['password']);
-                
-                if($validPassword) {
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['logged_in'] = time();
-                    
-                    header('Location: successful.html');
-                    exit;
-                    
-                } else {
-                    die('Incorrect username/password');
-                }
-            }
-        } 
     
-    
-    ?>
     
     <head>
         <link rel="stylesheet" href="style.css">
@@ -50,22 +58,20 @@
     
     <body>
        
-        <form action="login.php" method="post">
+        <form action="" method="post">
             <div class="imgcontainer">   
             </div>
 
             <div class="container">
-                <label for="uname"><b>Username</b></label>
+                <label for="username"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="username" required>
         
-                <label for="psw"><b>Password</b></label>
+                <label for="password"><b>Password</b></label>
                 
                 <input type="password" placeholder="Enter Password" name="password" required>
         
                 <button type="submit">LOG IN</button>
-                <label>
-                    <input type="checkbox" checked="checked" name="remember"> Remember me
-                </label>
+                
             </div>
         
             <div class="container" style="background-color:#f1f1f1">
