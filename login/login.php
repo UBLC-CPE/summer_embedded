@@ -20,7 +20,7 @@
             if($count > 0) {
                 header("location:   successful.html");
             } else {
-                $error = "Invalid Credentials";
+                echo '<script>alert("Invalid Credentials")</script>';
             }
             
             /*
