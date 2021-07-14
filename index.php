@@ -1,4 +1,3 @@
-<!--This part calls the connection php file to the mysql server -->
 <?php
     include("config/connect.php");
 ?>
@@ -30,6 +29,26 @@
         </form>
         
         
+        
+        <form action="insert.php" method="post">
+            <div class="imgcontainer">   
+            </div>
+
+            <div class="container">
+                <label for="un"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="un" required>
+        
+                <label for="ps"><b>Password</b></label>
+                
+                <input type="password" placeholder="Enter Password" name="pw" required>
+        
+                <button type="submit">ADD USERS</button>
+                
+            </div>
+        
+        </form>
+        
+        
         <div>
                         
             <br />
@@ -51,24 +70,14 @@
                     </tr>
                 </thead>
                 <tbody>
-
-                    <!-- 
-                        This part creates an query to call all data in ID and UN
-                    -->
                     <?php
                         $sql = "SELECT id, un FROM login";
                         $result = $conn->query($sql);
                         
-
-                        //Get the the result from the query and compare to 0
                         if($result->num_rows > 0) {
-
-                            //fetch all the data from ID and UN
                             while ($row = $result->fetch_assoc()) {
                                 ?>
                                 <tr style="border: solid 1px;">
-
-                                    <!-- combination of html and php to pass the data from mysql to the webpage in the table row -->
                                     <td style="border: solid 1px;"> <?php echo $row["id"] ?></td>
                                     <td style="border: solid 1px;"> <?php echo $row["un"] ?></td>
                                 </tr>
@@ -78,7 +87,6 @@
                             echo "No result";
                         }
                         
-                        //connection close
                         $conn->close();
                         ?>
                     
